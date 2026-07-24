@@ -1,0 +1,491 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Alice SQ-4</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css?v=2">
+</head>
+
+<body>
+    <div id="app-container">
+
+        <!-- Overlay during movement (Image + STOP) -->
+        <div id="movement-overlay">
+            <div
+                style="position: absolute; top: calc(50% + 60px); left: 50%; transform: translate(-50%, -50%); text-align: center; filter: drop-shadow(0 5px 15px rgba(0,0,0,0.5));">
+                <button style="background: none; border: none; padding: 0; margin: 0; cursor: pointer; outline: none;"
+                    onclick="emergencyStop()">
+                    <svg width="180" height="180" viewBox="0 0 180 180">
+                        <polygon points="54,4 126,4 176,54 176,126 126,176 54,176 4,126 4,54" fill="none" stroke="white"
+                            stroke-width="8" />
+                        <polygon points="54,4 126,4 176,54 176,126 126,176 54,176 4,126 4,54" fill="#a60000"
+                            stroke="black" stroke-width="4" />
+                        <text x="50%" y="50%" dy=".1em" dominant-baseline="middle" text-anchor="middle" fill="white"
+                            font-family="'Arial', sans-serif" font-weight="900" font-size="44"
+                            letter-spacing="1">STOP</text>
+                    </svg>
+                </button>
+            </div>
+        </div>
+
+        <!-- Top Navigation -->
+        <header id="top-nav">
+            <div class="dropdown">
+                <button id="main-nav-btn" class="nav-btn" onclick="handleNavClick()"><i id="nav-btn-icon"
+                        class="fas fa-bars"></i></button>
+                <button id="home-nav-btn" class="nav-btn hidden" onclick="goHome()"><i class="fas fa-home"
+                        style="color: black;"></i></button>
+                <div id="main-dropdown" class="dropdown-content hidden">
+                    <a href="#" id="toggle-devices-btn" onclick="toggleConnectedDevices()"><i class="fas fa-info-circle"
+                            style="width: 20px; color: var(--text-muted);"></i> Connected Devices</a>
+                    <a href="#" onclick="showConnectDevice()"><i class="fas fa-plus-circle"
+                            style="width: 20px; color: var(--text-muted);"></i> Connect a Device</a>
+                    <a href="#" onclick="showHelp()"><i class="fas fa-question-circle"
+                            style="width: 20px; color: var(--text-muted);"></i> Help</a>
+                </div>
+            </div>
+
+            <div id="top-quote-container" class="top-quote">
+                <p id="daily-quote">"Intelligence without good intentions and good realization can't see the enjoyment
+                    in creation"</p>
+            </div>
+        </header>
+
+        <!-- Main Content Area -->
+        <main id="main-content">
+
+            <!-- Global Warning/Error Notification Area -->
+            <div id="notification-area" class="hidden"></div>
+
+            <!-- 1. Welcome Screen -->
+            <section id="welcome-screen" class="screen active">
+                <div class="welcome-content">
+                    <div class="top-text">
+                        <h1 class="text-center"
+                            style="font-size: 38px; font-weight: 700; font-family: serif; font-style: italic; color: var(--primary-green-dark); margin-bottom: 15px;">
+                            Alice Is Back</h1>
+                        <p class="description text-center black-text">She wants to learn and can use your help with the
+                            free Pro version. Just take the camera kit and enjoy the Pro version for free. It's your
+                            choice to upload the photos of your crop manually or automatically.</p>
+                    </div>
+
+                    <div class="button-group bottom-buttons">
+                        <!-- Connected Devices Info (Hidden by default) -->
+                        <div id="connected-devices-info" class="hidden">
+                            <div class="device-row">
+                                <span><i class="fas fa-link text-green"></i> Light lifting</span>
+                                <strong class="device-status">20 cm</strong>
+                            </div>
+                            <div class="device-row">
+                                <span><i class="fas fa-link text-green"></i> Net lifting</span>
+                                <strong class="device-status">50 cm</strong>
+                            </div>
+                        </div>
+
+                        <!-- Help Instructions Panel (Hidden by default) -->
+                        <div id="help-instructions-panel" class="hidden"
+                            style="position: relative; background: rgba(255,255,255,0.6); padding: 15px; border-radius: 8px; border: 1px solid var(--card-border); margin-bottom: 15px; backdrop-filter: blur(10px); animation: fadeIn 0.4s ease;">
+                            <button onclick="closeHelp()"
+                                style="position: absolute; top: 10px; right: 10px; background: none; border: none; font-size: 18px; cursor: pointer; color: var(--text-main); padding: 5px;"><i
+                                    class="fas fa-times"></i></button>
+                            <h2 style="color: #0d47a1; margin-bottom: 10px; text-align: left; font-size: 18px;">Help &
+                                Instructions</h2>
+                            <p class="description black-text"
+                                style="margin-bottom: 10px; text-align: left; line-height: 1.4; font-size: 13px;">It's
+                                very easy to control the lifters.</p>
+                            <p class="description black-text"
+                                style="margin-bottom: 10px; text-align: left; line-height: 1.4; font-size: 13px;">Choose
+                                how many centimeters you want to move the system, then select Up or Down. You can move
+                                all four lifters together, or adjust each corner separately when needed.</p>
+                            <p class="description black-text"
+                                style="margin-bottom: 10px; text-align: left; line-height: 1.4; font-size: 13px;">The
+                                app shows the current position of the lifters and keeps movement within safe limits.</p>
+                            <p class="description black-text"
+                                style="margin-bottom: 0; text-align: left; line-height: 1.4; font-weight: 800; color: #da3e52 !important; font-size: 13px;">
+                                Use Emergency Stop at any time to stop all movement immediately.</p>
+                        </div>
+
+                        <!-- Connect Device Panel (Hidden by default) -->
+                        <div id="connect-device-panel" class="hidden"
+                            style="position: relative; background: rgba(255,255,255,0.6); padding: 15px; border-radius: 8px; border: 1px solid var(--card-border); margin-bottom: 15px; backdrop-filter: blur(10px); animation: fadeIn 0.4s ease;">
+                            <button onclick="closeConnectDevice()"
+                                style="position: absolute; top: 10px; right: 10px; background: none; border: none; font-size: 18px; cursor: pointer; color: var(--text-main); padding: 5px;"><i
+                                    class="fas fa-times"></i></button>
+                            <h2 style="color: #0d47a1; margin-bottom: 15px; text-align: left; font-size: 18px;">Connect
+                                a Device</h2>
+                            <p class="description black-text"
+                                style="margin-bottom: 15px; text-align: left; font-size: 13px;">Select your connection
+                                method to pair with Alice SQ-4.</p>
+
+                            <div style="display: flex; gap: 10px; margin-bottom: 15px;">
+                                <button class="btn-outline" style="flex: 1; margin: 0; padding: 10px;"
+                                    onclick="showNotification('Bluetooth selected', false)"><i
+                                        class="fab fa-bluetooth-b"></i> Bluetooth</button>
+                                <button class="btn-outline" style="flex: 1; margin: 0; padding: 10px;"
+                                    onclick="showNotification('Wi-Fi selected', false)"><i class="fas fa-wifi"></i>
+                                    Wi-Fi</button>
+                            </div>
+
+                            <button class="btn-primary green-glow" style="padding: 12px; margin: 0;"
+                                onclick="showNotification('Pairing...', false)">Pair Device</button>
+                        </div>
+
+                        <button class="btn-primary green-glow" onclick="navigateTo('manual-control')">Go to Plant Lift
+                            Control</button>
+                        <button class="btn-outline" onclick="showConnectDevice()">Connect a Device</button>
+                        <button class="btn-secondary" onclick="navigateTo('products')">Get the Pro camera kit</button>
+                    </div>
+
+                    <!-- Image removed completely as requested -->
+                </div>
+            </section>
+
+            <!-- 2. Manual Control (Up-Down Control for Net and Light) -->
+            <section id="manual-control" class="screen">
+
+                <!-- Target Device Toggle -->
+                <div class="card">
+                    <h3>Target Device</h3>
+                    <div class="mode-toggle">
+                        <button id="device-net" class="toggle-btn active" onclick="setDevice('net')">Plant Net</button>
+                        <button id="device-light" class="toggle-btn" onclick="setDevice('light')">Top Light</button>
+                    </div>
+                </div>
+
+                <!-- Net Mode (Hidden when Light is active) -->
+                <div class="card" id="net-mode-container">
+                    <div class="mode-toggle">
+                        <button id="mode-sync" class="toggle-btn active"
+                            onclick="setManualMode('sync')">Synchronized</button>
+                        <button id="mode-indiv" class="toggle-btn" onclick="setManualMode('indiv')">Individual</button>
+                    </div>
+                </div>
+
+                <!-- Point Selector (Hidden when Light is active) -->
+                <div class="card point-selector" id="net-point-selector">
+                    <div class="grid-corners">
+                        <div class="corner-btn-group">
+                            <button class="corner-btn" id="btn-FL" onclick="selectPoint('FL')">FL</button>
+                            <span class="point-status" id="status-FL">0 cm<br>(+0)</span>
+                        </div>
+                        <div class="corner-btn-group">
+                            <button class="corner-btn" id="btn-FR" onclick="selectPoint('FR')">FR</button>
+                            <span class="point-status" id="status-FR">0 cm<br>(+0)</span>
+                        </div>
+                        <div class="corner-btn-group center-btn">
+                            <button class="corner-btn active" id="btn-ALL" onclick="selectPoint('ALL')">ALL</button>
+                        </div>
+                        <div class="corner-btn-group">
+                            <button class="corner-btn" id="btn-BL" onclick="selectPoint('BL')">BL</button>
+                            <span class="point-status" id="status-BL">0 cm<br>(+0)</span>
+                        </div>
+                        <div class="corner-btn-group">
+                            <button class="corner-btn" id="btn-BR" onclick="selectPoint('BR')">BR</button>
+                            <span class="point-status" id="status-BR">0 cm<br>(+0)</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <h3>Distance</h3>
+                    <div class="distance-selector">
+                        <button class="dist-btn active" onclick="setDistance(1)">1 cm</button>
+                        <button class="dist-btn" onclick="setDistance(2)">2 cm</button>
+                        <button class="dist-btn" onclick="setDistance(3)">3 cm</button>
+                        <button class="dist-btn" onclick="setDistance(4)">4 cm</button>
+                        <button class="dist-btn" onclick="setDistance(5)">5 cm</button>
+                    </div>
+                </div>
+
+                <div class="action-buttons dual">
+                    <button class="btn-action dark" onclick="executeMove('UP')">UP</button>
+                    <button class="btn-action dark" onclick="executeMove('DOWN')">DOWN</button>
+                </div>
+
+                <div class="collapsible-section">
+                    <button class="collapsible-btn calibration-btn"
+                        onclick="toggleCollapse('calibration-panel'); refreshCalibrationUI();"><i
+                            class="fas fa-tools"></i> Calibration & Leveling <i class="fas fa-chevron-down"
+                            style="float: right;"></i></button>
+                    <div id="calibration-panel" class="collapsible-content">
+
+                        <!-- 1. Set Zero Level -->
+                        <div class="calib-block" id="calib-block-1">
+                            <h4>Set Zero Level</h4>
+                            <p class="description black-text" style="font-size:12px; margin-bottom:5px;">Physically
+                                align motors to a selected height.</p>
+                            <div id="zero-level-info" class="calib-info"
+                                style="font-size: 13px; margin: 10px 0; font-weight: 600;">
+                                <!-- Populated dynamically -->
+                            </div>
+                            <div style="display: flex; gap: 5px; margin-top: 10px;">
+                                <button class="btn-outline" style="font-size:12px; padding: 8px; flex: 1;"
+                                    onclick="alignTo('lowest')">Lowest</button>
+                                <button class="btn-outline" style="font-size:12px; padding: 8px; flex: 1;"
+                                    onclick="alignTo('middle')">Middle</button>
+                                <button class="btn-outline" style="font-size:12px; padding: 8px; flex: 1;"
+                                    onclick="alignTo('highest')">Highest</button>
+                            </div>
+                        </div>
+
+                        <hr id="calib-hr-1"
+                            style="border: 0; border-top: 1px solid var(--card-border); margin: 15px 0;">
+
+                        <!-- 2. Save Current Offsets -->
+                        <div class="calib-block" id="calib-block-2">
+                            <h4>Save Current Offsets</h4>
+                            <div id="save-offsets-info" class="calib-info" style="font-size: 13px; margin: 10px 0;">
+                                <!-- Populated dynamically -->
+                            </div>
+                            <div style="display: flex; gap: 10px;">
+                                <input type="text" id="save-profile-name" placeholder="Profile name..."
+                                    style="flex: 2; padding: 8px; border-radius: 4px; border: 1px solid var(--card-border); font-size:13px; background: rgba(255,255,255,0.6);">
+                                <button class="btn-primary green-glow"
+                                    style="flex: 1; margin: 0; padding: 8px; font-size:13px;"
+                                    onclick="saveOffsets()">Save</button>
+                            </div>
+                        </div>
+
+                        <hr id="calib-hr-2"
+                            style="border: 0; border-top: 1px solid var(--card-border); margin: 15px 0;">
+
+                        <!-- 3. Load Saved Offsets -->
+                        <div class="calib-block" id="calib-block-3">
+                            <h4>Load Saved Offsets</h4>
+                            <div style="display: flex; gap: 10px; margin-top: 10px;">
+                                <select id="load-profile-select" class="dropdown-select"
+                                    style="flex: 2; padding: 8px; font-size:13px;">
+                                    <option value="" disabled selected>Select profile</option>
+                                </select>
+                                <button class="btn-outline" style="flex: 1; margin: 0; padding: 8px; font-size:13px;"
+                                    onclick="loadOffsets()">Load</button>
+                            </div>
+                        </div>
+
+                        <hr id="calib-hr-3"
+                            style="border: 0; border-top: 1px solid var(--card-border); margin: 15px 0;">
+
+                        <!-- 4. Level Net -->
+                        <div class="calib-block" id="calib-block-4">
+                            <h4 id="level-net-title">Level Net</h4>
+                            <p id="level-net-desc" class="description black-text"
+                                style="font-size:12px; margin-bottom: 10px;">Cut power to manually level the net
+                                physically.</p>
+
+                            <div id="level-net-error" class="hidden" style="margin-bottom: 15px;">
+                                <div
+                                    style="color: var(--primary-red); font-size: 12px; font-weight: bold; margin-bottom: 10px;">
+                                    Please use "Set Zero Level" to align software data first. All offsets must be zero.
+                                </div>
+                                <div style="display: flex; gap: 5px;">
+                                    <button class="btn-outline" style="font-size:12px; padding: 8px; flex: 1;"
+                                        onclick="alignTo('lowest')">Lowest</button>
+                                    <button class="btn-outline" style="font-size:12px; padding: 8px; flex: 1;"
+                                        onclick="alignTo('middle')">Middle</button>
+                                    <button class="btn-outline" style="font-size:12px; padding: 8px; flex: 1;"
+                                        onclick="alignTo('highest')">Highest</button>
+                                </div>
+                            </div>
+
+                            <div id="level-net-flow-1">
+                                <button id="level-net-btn" class="btn-primary green-glow"
+                                    style="padding: 10px; font-size: 13px; margin:0;" onclick="startLevelNet()">Level
+                                    Net</button>
+                            </div>
+                            <div id="level-net-flow-2" class="hidden">
+                                <p id="level-net-confirm-desc" class="description black-text"
+                                    style="font-size:13px; color: var(--primary-red); font-weight:bold; margin-bottom: 10px;">
+                                    Are you sure you want to cut the power and level the net?</p>
+                                <div style="display: flex; gap: 10px;">
+                                    <button class="btn-primary"
+                                        style="flex:1; background: var(--primary-red); border-color: var(--primary-red); margin:0;"
+                                        onclick="confirmCutPower(true)">Yes</button>
+                                    <button class="btn-outline" style="flex:1; margin:0;"
+                                        onclick="confirmCutPower(false)">No</button>
+                                </div>
+                            </div>
+                            <div id="level-net-flow-3" class="hidden">
+                                <button class="btn-primary"
+                                    style="padding: 10px; font-size: 13px; margin:0; background: var(--primary-red); border-color: var(--primary-red); animation: blink-red 2s infinite;"
+                                    onclick="restorePower()">When finished, press here to start electricity</button>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </section>
+
+            <section id="wave-control" class="screen">
+                <div style="display: flex; flex-direction: column; min-height: calc(100vh - 160px);">
+                    <div class="card">
+                        <h3>Preset Wave</h3>
+                        <select id="wave-preset" class="dropdown-select">
+                            <option value="gentle">Gentle Wave</option>
+                            <option value="frontback">Front-Back Wave</option>
+                            <option value="leftright">Left-Right Wave</option>
+                            <option value="diagonal">Diagonal Wave</option>
+                            <option value="circular">Circular Wave</option>
+                        </select>
+                    </div>
+
+                    <!-- New Wave Function Card -->
+                    <div class="card" id="wave-function-card"
+                        style="flex-grow: 1; display: flex; flex-direction: column; justify-content: center; align-items: center; min-height: 80px;">
+                        <h3 style="margin-bottom: 5px;">Wave Function</h3>
+                        <p class="description black-text text-center" style="font-size: 13px;">Wave logic goes here...
+                        </p>
+                    </div>
+
+                    <div class="card">
+                        <h3>Wave Height</h3>
+                        <div class="distance-selector wave-dist">
+                            <button class="dist-btn-wave active" onclick="setWaveDistance(1)">1 cm</button>
+                            <button class="dist-btn-wave" onclick="setWaveDistance(2)">2 cm</button>
+                            <button class="dist-btn-wave" onclick="setWaveDistance(3)">3 cm</button>
+                            <button class="dist-btn-wave" onclick="setWaveDistance(4)">4 cm</button>
+                            <button class="dist-btn-wave" onclick="setWaveDistance(5)">5 cm</button>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <h3>Global Direction</h3>
+                        <div class="mode-toggle">
+                            <button id="wave-dir-raise" class="toggle-btn active"
+                                onclick="setWaveDirection('raise')">Raise Wave</button>
+                            <button id="wave-dir-lower" class="toggle-btn" onclick="setWaveDirection('lower')">Lower
+                                Wave</button>
+                        </div>
+                    </div>
+
+                    <button class="btn-primary green-glow" onclick="executeWave()" style="margin-top: auto;">Start
+                        Wave</button>
+                </div>
+            </section>
+
+            <!-- 4. Give Love Mode -->
+            <section id="give-love" class="screen">
+                <div style="display: flex; flex-direction: column; min-height: calc(100vh - 160px);">
+                    <div class="card">
+                        <div class="flex-title">
+                            <h3>Give Love Mode</h3>
+                            <i class="fas fa-heart text-green"></i>
+                        </div>
+                        <p class="description">A gentle micro-movement for the plant net. Use it when leaves rest on the
+                            net or when you want to softly refresh the plant support area.</p>
+                    </div>
+
+                    <div class="card" id="give-love-function-card"
+                        style="flex-grow: 1; display: flex; flex-direction: column; justify-content: center; align-items: center; min-height: 80px;">
+                        <h3 style="margin-bottom: 5px; color: var(--primary-green-dark);">Give Love Function</h3>
+                        <p class="description black-text text-center" style="font-size: 12px;">Waiting for logic and
+                            formulas...</p>
+                    </div>
+
+                    <div class="card">
+                        <h3>Duration</h3>
+                        <div class="mode-toggle">
+                            <button id="love-dur-5" class="toggle-btn active" onclick="setLoveDuration(5)">5
+                                sec</button>
+                            <button id="love-dur-10" class="toggle-btn" onclick="setLoveDuration(10)">10 sec</button>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <h3>Intensity</h3>
+                        <div class="mode-toggle">
+                            <button id="love-int-soft" class="toggle-btn active"
+                                onclick="setLoveIntensity('soft')">Soft</button>
+                            <button id="love-int-normal" class="toggle-btn"
+                                onclick="setLoveIntensity('normal')">Normal</button>
+                        </div>
+                    </div>
+
+                    <button class="btn-primary green-glow" onclick="executeGiveLove()" style="margin-top: auto;">Start
+                        Give Love</button>
+                </div>
+            </section>
+
+            <!-- 5. Products & Pro (No motor controls) -->
+            <section id="products" class="screen">
+                <div class="card brand-card">
+                    <h2
+                        style="color: var(--primary-green-dark); font-family: serif; font-style: italic; font-size: 28px;">
+                        Alice Pro & Kit</h2>
+                    <p class="description mt-10">Expand your system. Note: Final lift sizes depend on mechanical tests
+                        and approved hardware.</p>
+                </div>
+
+                <div class="card product-card">
+                    <h3>Lift Classes</h3>
+                    <div class="product-row"><span>30 cm Lift</span>
+                        <div><button class="btn-text">Learn</button> <button class="btn-small-dark">Reserve</button>
+                        </div>
+                    </div>
+                    <div class="product-row"><span>40 cm Lift</span>
+                        <div><button class="btn-text">Learn</button> <button class="btn-small-dark">Reserve</button>
+                        </div>
+                    </div>
+                    <div class="product-row"><span>50 cm Lift</span>
+                        <div><button class="btn-text">Learn</button> <button class="btn-small-dark">Reserve</button>
+                        </div>
+                    </div>
+                    <div class="product-row"><span>60 cm Lift</span>
+                        <div><button class="btn-text">Learn</button> <button class="btn-small-dark">Reserve</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card product-card">
+                    <h3>Software & Hardware</h3>
+                    <div class="product-row"><span>Pro App Upgrade</span> <button
+                            class="btn-small-green">Upgrade</button></div>
+                    <div class="product-row"><span>Camera Kit (Optional)</span> <button class="btn-small-dark">View
+                            Kit</button></div>
+                </div>
+
+                <div class="card product-card">
+                    <h3>Future Concepts</h3>
+                    <div class="product-row"><span>120cm / 150cm Systems</span> <button class="btn-text">Learn
+                            More</button></div>
+                </div>
+            </section>
+
+            <!-- Menu Screen -->
+            <section id="menu" class="screen">
+                <h2 style="text-align: center; margin-top: 20px;">Settings & Profile</h2>
+                <div class="card mt-20 text-center">
+                    <p>Device Status: <strong style="color: var(--primary-green)">Connected</strong></p>
+                </div>
+            </section>
+
+        </main>
+
+        <!-- Bottom Navigation -->
+        <nav id="bottom-nav">
+            <button id="nav-manual" class="bottom-nav-item" onclick="navigateTo('manual-control')">
+                <i class="fas fa-arrows-alt"></i>
+                <span>Net Control</span>
+            </button>
+            <button id="nav-wave" class="bottom-nav-item" onclick="navigateTo('wave-control')">
+                <i class="fas fa-water"></i>
+                <span>Wave</span>
+            </button>
+            <button id="nav-love" class="bottom-nav-item" onclick="navigateTo('give-love')">
+                <i class="fas fa-heart"></i>
+                <span>Give Love</span>
+            </button>
+            <button id="nav-products" class="bottom-nav-item" onclick="navigateTo('products')">
+                <i class="fas fa-shopping-cart"></i>
+                <span>Products</span>
+            </button>
+        </nav>
+    </div>
+
+    <script src="app.js?v=3"></script>
+</body>
+
+</html>

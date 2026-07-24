@@ -1,0 +1,25 @@
+# ===== Alice Cultivation Station — .gitignore =====
+# Keep the public repo lean and keep internal/work files private.
+
+# --- Large media / work-in-progress (not for GitHub) ---
+WorkFiles_Video/
+WorkFiles_Pic/
+
+# --- Old backups / previous versions ---
+Old_Files1/
+Old_Files2/
+
+# --- Internal / concept / draft docs (keep private for now) ---
+Gadjet-1_App_Design_Review_EN.md
+Growing_Automation_In_4_Points_v01.txt
+PARTS_LIST_DRAFT.md
+*Помощник*.txt
+Lifter_3Dprints/Print_3D/New Text Document.txt
+
+# --- OS / editor cruft ---
+Thumbs.db
+Desktop.ini
+.DS_Store
+*.tmp
+*.log
+*.bak
