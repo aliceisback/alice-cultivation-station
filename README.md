@@ -12,6 +12,15 @@ give your plants gentle, controlled movement.
 
 ---
 
+## 🗓️ Roadmap
+
+- 📤 **Remaining part files (STLs) upload:** by **this weekend — Sat/Sun, 25–26 July 2026**.
+- 🔧 **Live assembly & testing:** the first full build and test begins
+  **Saturday, 1 August 2026**. The cables are already prepared, so assembly
+  should take roughly a day (at most 1–2 days).
+
+---
+
 ## ✨ What it does
 
 - **4-point lifting** — each corner has its own motorized column
